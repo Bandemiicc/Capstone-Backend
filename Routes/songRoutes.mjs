@@ -21,6 +21,16 @@ router.post('/', async (req,res)=>{
     }
 });
 
+router.get('/allsongs', async (req,res)=>{
+    try {
+        const allSongs = await Song.find()
+        res.json(allSongs)
+    } catch (err) {
+        console.error(err)
+        res.status(500).json({ msg: "server error"})
+    }
+})
+
 // Read (COMPLETE!!!!!)
 router.get('/', async(req,res)=>{
     const playlistId  = req.query.playlistId
