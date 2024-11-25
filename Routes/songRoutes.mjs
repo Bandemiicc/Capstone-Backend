@@ -8,22 +8,24 @@ const router = express.Router();
 //     res.send('Testing!!')
 // });
 
-// Create
+// Create (COMPLETE!!!!!)
 router.post('/', async (req,res)=>{
+    const { name, artist, album, playlistId } = req.body 
     try {
-        const newSong = new Song (req.body);
+        const newSong = new Song ({ name, artist, album, playlistId });
         await newSong.save();
-       return res.status(201).json(newSong)
+        res.status(201).json(newSong)
     } catch (err) {
         console.error(err)
         res.status(500).json({msg: "server error"})
     }
 });
 
-// Read
+// Read (COMPLETE!!!!!)
 router.get('/', async(req,res)=>{
+    const playlistId  = req.query.playlistId
     try {
-        const songs = await Song.find()
+        const songs = await Song.find({playlistId})
         res.json(songs);
     } catch (err) {
         console.error(err)
@@ -31,7 +33,17 @@ router.get('/', async(req,res)=>{
     }
 });
 
-// Update
+router.get('/:id', async(req,res)=>{
+    try {
+        const songs = await Song.findById(req.params.id)
+        res.json(songs);
+    } catch (err) {
+        console.error(err)
+        res.status(500).json({msg: "server error"})
+    }
+});
+
+// Update (COMPLETE!!!!!)
 router.put('/:id', async (req,res)=>{
     try {
         const updatedSong = await Song.findByIdAndUpdate(req.params.id, req.body, {new: true});
@@ -46,7 +58,7 @@ router.put('/:id', async (req,res)=>{
     }
 });
 
-// Delete
+// Delete (COMPLETE!!!!!)
 router.delete('/:id', async (req,res)=>{
     try {
         const deletedSong = await Song.findByIdAndDelete(req.params.id);

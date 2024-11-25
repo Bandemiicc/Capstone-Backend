@@ -19,9 +19,8 @@ const SongSchema = new mongoose.Schema({
         default: null
     },
     playlistId: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Playlist', // Reference to Playlist model
-        required: [true, 'Playlist ID is required'], 
+        type: String,
+        required: true
     },
 });
 SongSchema.index({name: 1})

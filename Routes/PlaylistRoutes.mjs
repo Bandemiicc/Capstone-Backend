@@ -4,7 +4,7 @@ import Song from "../Model/SongSchema.mjs";
 
 const router = express.Router()
 
-//create a new playlist
+//create a new playlist (TESTED!)
 router.post('/', async (req, res) => {
     try {
         const newPlaylist = new Playlist(req.body);
@@ -18,10 +18,10 @@ router.post('/', async (req, res) => {
 // add song to the playlizt
 router.post('/:playlistId/songs', async (req, res) => {
     const { songId } = req.body;
-    const { playlistId } = req.params
+    const { playlistId } = req.params;
 
     try {
-        const playlist = await Playlist.findById(playlistId);
+        const playlist = await Playlist.findById(playlistId)
         if (!playlist){
             return res.status(404).json({ msg: "Playlist not found" })
         }
@@ -29,8 +29,8 @@ router.post('/:playlistId/songs', async (req, res) => {
         if(!song){
             return res.status(404).json({msg: "Song not found"})
         }
-        playlist.songs.push(song._id);
-        await playlist.save();
+        // playlist.songs.push(song);
+        // await playlist.save();
 
         res.status(201).json(playlist);
     } catch (err) {
@@ -43,10 +43,26 @@ router.get('/', async (req, res) => {
     try {
         const playlists = await Playlist.find().populate('songs');
         res.json(playlists);
+        console.log(playlists)
     } catch (err) {
         console.error(err)
         res.status(500).json({ msg: "Server error" })
     }
 });
+
+/// CREATE A UPDATE PLAYLIST ROUTE!
+
+router.put('/:id', async (req, res) => {
+    try {
+        const updatedSong = await playlist.findByIdAndUpdate(req.params.id, req.body, {new: true});
+        if(!updatedSong){
+            return res.status(404).json({msg: "Song not found"})
+        }
+        res.status(200).json(updatedSong);
+    } catch (err) {
+        console.error(err)
+        res.status(500).json({ msg: "playlist did not update"})
+    }
+})
 
 export default router;
