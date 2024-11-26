@@ -54,7 +54,7 @@ router.get('/', async (req, res) => {
 
 router.put('/:id', async (req, res) => {
     try {
-        const updatedSong = await playlist.findByIdAndUpdate(req.params.id, req.body, {new: true});
+        const updatedSong = await Playlist.findByIdAndUpdate(req.params.id, req.body, {new: true});
         if(!updatedSong){
             return res.status(404).json({msg: "Song not found"})
         }
